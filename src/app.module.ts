@@ -8,7 +8,7 @@ import { UsersModule } from './models/users/users.module';
 import { JwtStrategy } from './common/guards/jwt/jwt.strategy';
 import { JwtModule } from '@nestjs/jwt';
 import { ProdutosModule } from './models/produtos/produtos.module';
-import { CarrinhosModule } from './models/carrinhos/carrinhos/carrinhos.module';
+import { CarrinhosModule } from './models/carrinhos/carrinhos.module';
 
 @Module({
   imports: [AuthModule,UsersModule,JwtModule, ProdutosModule, CarrinhosModule],
