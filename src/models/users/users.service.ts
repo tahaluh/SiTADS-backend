@@ -20,12 +20,15 @@ export class UsersService {
     });
 
     if (findUser) throw new BadRequestException('Este usuário já existe');
+    
+    console.log(data)
 
     let user = await this.prisma.user.create({
       data: {
         ...data,
       },
     });
+
 
     let carrinho = await this.prisma.carrinho.create({
       data:{
