@@ -39,13 +39,7 @@ export class UsersService {
       }
     })
 
-    if (data.role == Role.VENDEDOR) {
-      this.prisma.vendedor.create({
-        data: {
-          user_id: user.id,
-        },
-      });
-    }
+    console.log(data)
 
     return user;
   }

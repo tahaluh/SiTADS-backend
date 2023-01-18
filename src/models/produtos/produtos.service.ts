@@ -8,9 +8,24 @@ export class ProdutosService {
   constructor(private prisma: PrismaService) {}
 
   async create(data: CreateProdutoDto) {
+
+    console.log(data.user_id)
+
+    let user = await this.prisma.user.findFirst({
+      where: {
+        id: data.user_id
+      }
+    })
+
+
+    console.log(user)
+    let vendedorId = (user.id)
+
+    console.log(data)
     return await this.prisma.produto.create({
       data: {
         ...data,
+        user_id: vendedorId
       },
     });
   }

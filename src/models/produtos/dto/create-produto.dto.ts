@@ -4,7 +4,7 @@ import { IsNumber, IsString } from 'class-validator';
 export class CreateProdutoDto {
   @ApiProperty()
   @IsString()
-  vendedor_id: string;
+  user_id: string;
 
   @ApiProperty()
   @IsString()
@@ -16,11 +16,11 @@ export class CreateProdutoDto {
 
   @ApiProperty()
   @IsNumber()
-  preco: number;
+  preco: string;
 
   @ApiProperty()
   @IsNumber()
-  quantidade: number;
+  quantidade: string;
 
   @ApiProperty()
   @IsString()

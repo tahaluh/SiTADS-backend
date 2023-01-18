@@ -32,33 +32,25 @@ model User {
   endereco   String?
   created_at DateTime @default(now())
   updated_at DateTime @updatedAt
-
-  vendedor Vendedor?
   carrinho Carrinho?
-  Pedido   Pedido?
+  Pedido   Pedido[]
+  
+  produtos Produto[]
 
   @@map("users")
 }
-
-model Vendedor {
-  id       String    @id @default(uuid())
-  user_id  String    @unique
-  user     User      @relation(fields: [user_id], references: [id], onDelete: Cascade)
-  produtos Produto[]
-
-  @@map("vendedor")
-}
-
 model Produto {
   id          String   @id @default(uuid())
-  vendedor_id String   @unique
-  vendedor    Vendedor @relation(fields: [vendedor_id], references: [id], onDelete: Cascade)
+  user_id String   
+  user    User @relation(fields: [user_id], references: [id], onDelete: Cascade)
 
   nome       String
-  preco      Float
-  quantidade Int
+  preco      String
+  quantidade String
   imagem     String
   categoria  String
+  descricao  String
+
 
   created_at           DateTime               @default(now())
   updated_at           DateTime               @updatedAt
@@ -94,7 +86,7 @@ model ProdutosNosCarrinhos {
 
 model Pedido {
   id      String @id @default(uuid())
-  user_id String @unique
+  user_id String 
   user    User   @relation(fields: [user_id], references: [id], onDelete: Cascade)
 
   valor         Float

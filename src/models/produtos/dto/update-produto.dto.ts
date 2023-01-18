@@ -11,12 +11,12 @@ export class UpdateProdutoDto extends PartialType(CreateProdutoDto) {
     @ApiProperty()
     @IsNumber()
     @IsOptional()
-    preco?: number;
+    preco?: string;
   
     @ApiProperty()
     @IsNumber()
     @IsOptional()
-    quantidade?: number;
+    quantidade?: string;
   
     @ApiProperty()
     @IsString()
