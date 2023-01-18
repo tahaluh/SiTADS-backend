@@ -5,6 +5,7 @@ import {
 } from '@nestjs/common';
 import { Role } from '@prisma/client';
 import { PrismaService } from 'src/common/database/prisma.service';
+import { hashPassword } from 'src/common/helpers/crypto';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
 
@@ -20,8 +21,9 @@ export class UsersService {
     });
 
     if (findUser) throw new BadRequestException('Este usuário já existe');
-    
-    console.log(data)
+        
+		const password = hashPassword(data.password)
+		data.password = password
 
     let user = await this.prisma.user.create({
       data: {
