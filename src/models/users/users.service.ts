@@ -27,6 +27,13 @@ export class UsersService {
       },
     });
 
+    let carrinho = await this.prisma.carrinho.create({
+      data:{
+        user_id: user.id,
+        valor_total: 0,
+      }
+    })
+
     if (data.role == Role.VENDEDOR) {
       this.prisma.vendedor.create({
         data: {
