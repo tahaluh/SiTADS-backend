@@ -15,11 +15,17 @@ export class ProdutosService {
     });
   }
 
-  findAll() {
+  async findAll() {
+    return await this.prisma.produto.findMany();
     return `This action returns all produtos`;
   }
 
-  findOne(id: number) {
+  async findOne(id: string) {
+    return await this.prisma.produto.findFirst({
+      where: {
+        id,
+      },
+    });
     return `This action returns a #${id} produto`;
   }
 

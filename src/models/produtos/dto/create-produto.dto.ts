@@ -21,4 +21,8 @@ export class CreateProdutoDto {
   @ApiProperty()
   @IsString()
   imagem: string;
+
+  @ApiProperty()
+  @IsString()
+  categoria: string;
 }

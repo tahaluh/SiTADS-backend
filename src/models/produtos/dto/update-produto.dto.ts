@@ -21,5 +21,10 @@ export class UpdateProdutoDto extends PartialType(CreateProdutoDto) {
     @ApiProperty()
     @IsString()
     @IsOptional()
-    imagem?: string;    
+    imagem?: string;  
+    
+    @ApiProperty()
+    @IsString()
+    @IsOptional()
+    categoria?: string;  
 }
