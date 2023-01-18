@@ -1,0 +1,120 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+enum Role {
+  ADMIN
+  VENDEDOR
+  CLIENTE
+}
+
+enum Status {
+  PENDENTE
+  FINALIZADO
+}
+
+model User {
+  id         String   @id @default(uuid())
+  name       String
+  role       Role     @default(CLIENTE)
+  email      String   @unique
+  password   String
+  phone      String?
+  cpf        String?
+  created_at DateTime @default(now())
+  updated_at DateTime @updatedAt
+
+  vendedor Vendedor?
+  carrinho Carrinho?
+  Pedido   Pedido?
+
+  @@map("users")
+}
+
+model Vendedor {
+  id       String    @id @default(uuid())
+  user_id  String    @unique
+  user     User      @relation(fields: [user_id], references: [id], onDelete: Cascade)
+  produtos Produto[]
+
+  @@map("vendedor")
+}
+
+model Produto {
+  id          String   @id @default(uuid())
+  vendedor_id String   @unique
+  vendedor    Vendedor @relation(fields: [vendedor_id], references: [id], onDelete: Cascade)
+
+  nome   String
+  preco  Float
+  imagem String
+
+  created_at           DateTime               @default(now())
+  updated_at           DateTime               @updatedAt
+  ProdutosNosCarrinhos ProdutosNosCarrinhos[]
+  ProdutosNosPedidos   ProdutosNosPedidos[]
+
+  @@map("produto")
+}
+
+model Carrinho {
+  id      String @id @default(uuid())
+  user_id String @unique
+  user    User   @relation(fields: [user_id], references: [id], onDelete: Cascade)
+
+  valor_total          Float
+  ProdutosNosCarrinhos ProdutosNosCarrinhos[]
+
+  @@map("carrinho")
+}
+
+model ProdutosNosCarrinhos {
+  carrinho_id String // relation scalar field (used in the `@relation` attribute above)
+  carrinho    Carrinho @relation(fields: [carrinho_id], references: [id])
+  produto_id  String // relation scalar field (used in the `@relation` attribute above)
+  produto     Produto  @relation(fields: [produto_id], references: [id])
+  quantidade  Int
+
+  created_at DateTime @default(now())
+  updated_at DateTime @updatedAt
+
+  @@id([carrinho_id, produto_id])
+}
+
+model Pedido {
+  id      String @id @default(uuid())
+  user_id String @unique
+  user    User   @relation(fields: [user_id], references: [id], onDelete: Cascade)
+
+  valor         Float
+  status        Status
+  descricao     String
+  local_entrega String
+
+  created_at         DateTime             @default(now())
+  updated_at         DateTime             @updatedAt
+  ProdutosNosPedidos ProdutosNosPedidos[]
+
+  @@map("pedido")
+}
+
+model ProdutosNosPedidos {
+  pedido_id  String // relation scalar field (used in the `@relation` attribute above)
+  pedido     Pedido  @relation(fields: [pedido_id], references: [id])
+  produto_id String // relation scalar field (used in the `@relation` attribute above)
+  produto    Produto @relation(fields: [produto_id], references: [id])
+  quantidade Int
+
+  created_at DateTime @default(now())
+  updated_at DateTime @updatedAt
+
+  @@id([pedido_id, produto_id])
+}
