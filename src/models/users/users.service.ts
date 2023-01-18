@@ -3,6 +3,7 @@ import {
   Injectable,
   NotFoundException,
 } from '@nestjs/common';
+import { Role } from '@prisma/client';
 import { PrismaService } from 'src/common/database/prisma.service';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
@@ -20,13 +21,21 @@ export class UsersService {
 
     if (findUser) throw new BadRequestException('Este usuário já existe');
 
-    this.prisma.user.create;
-
-    return await this.prisma.user.create({
+    let user = await this.prisma.user.create({
       data: {
         ...data,
       },
     });
+
+    if (data.role == Role.VENDEDOR) {
+      this.prisma.vendedor.create({
+        data: {
+          user_id: user.id,
+        },
+      });
+    }
+
+    return user;
   }
 
   findAll() {
@@ -38,8 +47,7 @@ export class UsersService {
       where: {
         id,
       },
-      include: {
-      },
+      include: {},
     });
 
     if (!user) throw new NotFoundException('Este usuário não existe');
